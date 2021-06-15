@@ -1,0 +1,39 @@
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: Gateway
+metadata:
+  name: payment-history-gateway
+  namespace: ecommerce
+spec:
+  selector:
+    istio: ingressgateway
+  servers:
+  - port:
+      number: 80
+      name: http
+      protocol: HTTP
+    hosts:
+    - "*"
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: payment-history-vs
+  namespace: ecommerce
+spec:
+  hosts:
+  - "*"
+  gateways:
+  - payment-history-gateway
+  http:
+  - name: "payments"
+    match:
+    - uri:
+        prefix: "/payments"
+    - uri:
+        prefix: "/paymentDetails"
+    route:
+    - destination:
+        host: payment-history
+        port:
+          number: 8080
