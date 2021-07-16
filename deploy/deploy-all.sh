@@ -1,7 +1,16 @@
 #!/bin/bash
 
-kubectl create ns ecommerce
-kubectl label namespace ecommerce istio-injection=enabled
+set -euo pipefail
+
+kubectl apply -f - <<EOF
+apiVersion: v1
+kind: Namespace
+metadata:
+  labels:
+    istio-injection: enabled
+  name: ecommerce
+EOF
+
 kubectl apply -f stripe-secret.yaml
 kubectl apply -f rabbitmq.yaml
 kubectl apply -f payment-history.yaml
