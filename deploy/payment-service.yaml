@@ -1,4 +1,10 @@
 apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: payment-service
+  namespace: ecommerce
+---
+apiVersion: v1
 kind: Service
 metadata:
   name: payment-service
@@ -30,6 +36,8 @@ spec:
       labels:
         app: payment-service
     spec:
+      serviceAccount: payment-service
+      serviceAccountName: payment-service
       containers:
       - name: payment-service
         image: docker.io/bjimerson/payment-service

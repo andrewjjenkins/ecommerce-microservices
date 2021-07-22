@@ -1,4 +1,10 @@
 apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: payment-history
+  namespace: ecommerce
+---
+apiVersion: v1
 kind: Service
 metadata:
   name: payment-history
@@ -30,6 +36,8 @@ spec:
       labels:
         app: payment-history
     spec:
+      serviceAccount: payment-history
+      serviceAccountName: payment-history
       containers:
       - name: payment-history
         image: docker.io/bjimerson/payment-history
